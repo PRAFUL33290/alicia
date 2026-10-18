@@ -279,49 +279,92 @@
   figure a:hover .carte { border-color: var(--bleu); box-shadow: 0 0 0 2px var(--bleu); }
   figure a:hover figcaption { color: var(--bleu); }
 
-  footer {
+  /* Barre de numéros collée en bas de l'écran pendant le défilement */
+  .numeros {
+    position: sticky;
+    bottom: 0;
+    z-index: 150;
     background: #000;
-    color: #fff;
-    text-align: center;
-    padding: 40px 24px 32px;
-    font-size: .95rem;
+    padding: 10px var(--gouttiere) calc(10px + env(safe-area-inset-bottom, 0px));
+    box-shadow: 0 -4px 16px rgba(0, 0, 0, .25);
   }
-  .footer-titre {
-    font-family: "Barlow Condensed", sans-serif;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: .1em;
-    font-size: 1.1rem;
-    margin-bottom: 16px;
-  }
-  .footer-numeros {
+  .numeros ul {
     display: grid;
     grid-template-columns: repeat(10, minmax(0, 1fr));
-    gap: 10px;
-    max-width: 640px;
-    margin: 0 auto 32px;
+    gap: 6px;
+    max-width: 560px;
+    margin: 0 auto;
     padding: 0;
     list-style: none;
   }
-  .footer-numeros a {
+  .numeros a {
     display: grid;
     place-items: center;
-    aspect-ratio: 1;
-    border-radius: 8px;
+    height: 34px;
+    border-radius: 6px;
     border: 1.5px solid rgba(255, 255, 255, .25);
     color: #fff;
     text-decoration: none;
     font-family: "Barlow Condensed", sans-serif;
     font-weight: 800;
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     transition: background .2s, border-color .2s;
   }
-  .footer-numeros a:hover, .footer-numeros a:focus-visible { background: var(--bleu); border-color: var(--bleu); }
-  .footer-contact b { color: var(--bleu-vif); font-weight: 500; }
-  .footer-contact span { margin: 0 10px; white-space: nowrap; }
+  .numeros a:hover, .numeros a:focus-visible { background: var(--bleu); border-color: var(--bleu); }
+
+  footer {
+    background: var(--nuit);
+    color: rgba(255, 255, 255, .8);
+    padding: 48px var(--gouttiere) 24px;
+    font-size: .95rem;
+    line-height: 1.6;
+  }
+  .footer-grille {
+    max-width: 1240px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1.2fr 1fr 1fr;
+    gap: 40px;
+  }
+  .footer-logo { display: block; height: 96px; width: auto; margin-bottom: 14px; }
+  footer h2 {
+    font-family: "Barlow Condensed", sans-serif;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    font-size: 1.1rem;
+    color: #fff;
+    margin-bottom: 14px;
+  }
+  footer ul { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+  .footer-services li { padding-left: 16px; position: relative; }
+  .footer-services li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: .6em;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--bleu-vif);
+  }
+  footer a { color: #fff; text-decoration: none; }
+  footer a:hover, footer a:focus-visible { color: var(--bleu-vif); }
+  .footer-contact span { display: block; font-size: .8rem; text-transform: uppercase; letter-spacing: .08em; color: rgba(255, 255, 255, .5); }
+  .footer-bas {
+    max-width: 1240px;
+    margin: 36px auto 0;
+    padding-top: 18px;
+    border-top: 1px solid rgba(255, 255, 255, .12);
+    font-size: .85rem;
+    color: rgba(255, 255, 255, .5);
+    text-align: center;
+  }
 
   @media (max-width: 1024px) {
     :root { --logo-h: 104px; --nav-h: 124px; }
+    .footer-grille { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .footer-marque { grid-column: 1 / -1; }
   }
   @media (max-width: 600px) {
     :root { --logo-h: 88px; --nav-h: 104px; --gouttiere: 16px; }
@@ -335,10 +378,12 @@
     main { padding: 0 12px 40px; margin-top: -24px; }
     .grille { gap: 16px; }
     article { padding: 14px; }
-    footer { padding: 32px 16px 24px; line-height: 1.7; }
-    .footer-numeros { gap: 5px; margin-bottom: 24px; }
-    .footer-numeros a { font-size: 1rem; border-radius: 6px; }
-    .footer-contact span { display: block; }
+    .numeros { padding-top: 8px; padding-bottom: calc(8px + env(safe-area-inset-bottom, 0px)); }
+    .numeros ul { gap: 4px; }
+    .numeros a { height: 30px; font-size: 1rem; border-radius: 5px; }
+    footer { padding-top: 36px; }
+    .footer-grille { grid-template-columns: minmax(0, 1fr); gap: 28px; }
+    .footer-logo { height: 80px; }
   }
 </style>
 </head>
@@ -372,12 +417,38 @@
   <div class="grille" id="grille"></div>
 </main>
 
+<nav class="numeros" aria-label="Accès rapide aux modèles">
+  <ul id="numeros"></ul>
+</nav>
+
 <footer>
-  <nav aria-label="Accès rapide aux modèles">
-    <p class="footer-titre">Modèles</p>
-    <ul class="footer-numeros" id="footer-numeros"></ul>
-  </nav>
-  <p class="footer-contact"><span>07 82 62 91 21</span> <span>rodriguesautomoto@gmail.com</span> <span><b>@rodriguesautomoto</b></span> <span>Ambarès-et-Lagrave</span></p>
+  <div class="footer-grille">
+    <div class="footer-marque">
+      <img class="footer-logo" src="LOGO/LOGO%20BLANC.png" alt="Rodrigues Auto Moto">
+      <p>Votre mécanicien spécialiste, rapide, fiable et ambulant. Intervention à domicile autour d’Ambarès-et-Lagrave.</p>
+    </div>
+    <div>
+      <h2>Services</h2>
+      <ul class="footer-services">
+        <li>Réparation voiture</li>
+        <li>Réparation vélo - moto</li>
+        <li>Transport de véhicules - Remorquage</li>
+        <li>Bricolage et multi services</li>
+        <li>Réparation carrosserie</li>
+        <li>Entretien - Réparation autres véhicules</li>
+      </ul>
+    </div>
+    <div>
+      <h2>Contact</h2>
+      <ul class="footer-contact">
+        <li><span>Téléphone</span><a href="tel:+33782629121">07 82 62 91 21</a></li>
+        <li><span>E-mail</span><a href="mailto:rodriguesautomoto@gmail.com">rodriguesautomoto@gmail.com</a></li>
+        <li><span>Instagram</span><a href="https://www.instagram.com/rodriguesautomoto/" target="_blank" rel="noopener">@rodriguesautomoto</a></li>
+        <li><span>Secteur</span>Ambarès-et-Lagrave et alentours</li>
+      </ul>
+    </div>
+  </div>
+  <p class="footer-bas">© Rodrigues Auto Moto · Ambarès-et-Lagrave</p>
 </footer>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
@@ -416,7 +487,7 @@
   document.getElementById("menu-liste").innerHTML = modeles.map(([titre], i) =>
     `<li><a href="#modele-${i + 1}"><b>${i + 1}</b>${titre}</a></li>`).join("");
 
-  document.getElementById("footer-numeros").innerHTML = modeles.map(([titre], i) =>
+  document.getElementById("numeros").innerHTML = modeles.map(([titre], i) =>
     `<li><a href="#modele-${i + 1}" title="${titre}" aria-label="Modèle ${i + 1} : ${titre}">${i + 1}</a></li>`).join("");
 
   const burger = document.getElementById("burger");
