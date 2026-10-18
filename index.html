@@ -46,7 +46,6 @@
     top: 0;
     left: 0;
     right: 0;
-    z-index: 300;
     background: transparent;
   }
   .navbar-barre {
@@ -58,16 +57,12 @@
     justify-content: space-between;
     gap: 16px;
   }
-  .logo { display: block; }
+  /* Pas de z-index sur .navbar : le logo passe sous le volet, le burger au-dessus */
+  .logo { display: block; position: relative; z-index: 100; }
   .logo img { display: block; height: var(--logo-h); width: auto; }
-  /* Le burger reste fixe pour rouvrir le menu après défilement */
   .burger {
-    position: fixed;
+    position: relative;
     z-index: 400;
-    top: calc(10px + (var(--logo-h) - 44px) / 2);
-    right: max(var(--gouttiere), calc((100vw - 1240px) / 2 + var(--gouttiere)));
-    border-radius: 50%;
-    transition: background .2s, box-shadow .2s, top .2s;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -90,8 +85,8 @@
   .burger-icone::before, .burger-icone::after { content: ""; position: absolute; left: 0; }
   .burger-icone::before { top: -8px; }
   .burger-icone::after { top: 8px; }
-  .burger.defile { top: 16px; background: var(--bleu); box-shadow: 0 4px 14px rgba(11, 18, 32, .3); }
-  .burger[aria-expanded="true"] { top: 14px; right: var(--gouttiere); background: transparent; box-shadow: none; }
+  /* Menu ouvert : le burger devient la croix, en haut du volet */
+  .burger[aria-expanded="true"] { position: fixed; top: 14px; right: var(--gouttiere); }
   .burger[aria-expanded="true"] .burger-icone::before,
   .burger[aria-expanded="true"] .burger-icone::after { background: var(--bleu); }
   .burger[aria-expanded="true"] .burger-icone { background: transparent; }
@@ -285,14 +280,45 @@
   figure a:hover figcaption { color: var(--bleu); }
 
   footer {
-    background: var(--nuit);
+    background: #000;
     color: #fff;
     text-align: center;
-    padding: 32px 24px;
+    padding: 40px 24px 32px;
     font-size: .95rem;
   }
-  footer b { color: var(--bleu-vif); font-weight: 500; }
-  footer span { margin: 0 10px; white-space: nowrap; }
+  .footer-titre {
+    font-family: "Barlow Condensed", sans-serif;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    font-size: 1.1rem;
+    margin-bottom: 16px;
+  }
+  .footer-numeros {
+    display: grid;
+    grid-template-columns: repeat(10, minmax(0, 1fr));
+    gap: 10px;
+    max-width: 640px;
+    margin: 0 auto 32px;
+    padding: 0;
+    list-style: none;
+  }
+  .footer-numeros a {
+    display: grid;
+    place-items: center;
+    aspect-ratio: 1;
+    border-radius: 8px;
+    border: 1.5px solid rgba(255, 255, 255, .25);
+    color: #fff;
+    text-decoration: none;
+    font-family: "Barlow Condensed", sans-serif;
+    font-weight: 800;
+    font-size: 1.2rem;
+    transition: background .2s, border-color .2s;
+  }
+  .footer-numeros a:hover, .footer-numeros a:focus-visible { background: var(--bleu); border-color: var(--bleu); }
+  .footer-contact b { color: var(--bleu-vif); font-weight: 500; }
+  .footer-contact span { margin: 0 10px; white-space: nowrap; }
 
   @media (max-width: 1024px) {
     :root { --logo-h: 104px; --nav-h: 124px; }
@@ -301,9 +327,7 @@
     :root { --logo-h: 88px; --nav-h: 104px; --gouttiere: 16px; }
     header { padding: calc(var(--nav-h) + 4px) 16px 56px; }
     .navbar-barre { padding: 8px var(--gouttiere); }
-    .burger { top: calc(8px + (var(--logo-h) - 40px) / 2); }
     .burger { width: 40px; height: 40px; }
-    .burger[aria-expanded="true"] { top: 14px; }
     .menu-panneau { width: min(85vw, 320px); }
     article { scroll-margin-top: 16px; }
     .pastilles { gap: 8px; margin-top: 18px; }
@@ -311,8 +335,10 @@
     main { padding: 0 12px 40px; margin-top: -24px; }
     .grille { gap: 16px; }
     article { padding: 14px; }
-    footer { padding: 24px 16px; line-height: 1.7; }
-    footer span { display: block; }
+    footer { padding: 32px 16px 24px; line-height: 1.7; }
+    .footer-numeros { gap: 5px; margin-bottom: 24px; }
+    .footer-numeros a { font-size: 1rem; border-radius: 6px; }
+    .footer-contact span { display: block; }
   }
 </style>
 </head>
@@ -347,7 +373,11 @@
 </main>
 
 <footer>
-  <span>07 82 62 91 21</span> <span>rodriguesautomoto@gmail.com</span> <span><b>@rodriguesautomoto</b></span> <span>Ambarès-et-Lagrave</span>
+  <nav aria-label="Accès rapide aux modèles">
+    <p class="footer-titre">Modèles</p>
+    <ul class="footer-numeros" id="footer-numeros"></ul>
+  </nav>
+  <p class="footer-contact"><span>07 82 62 91 21</span> <span>rodriguesautomoto@gmail.com</span> <span><b>@rodriguesautomoto</b></span> <span>Ambarès-et-Lagrave</span></p>
 </footer>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
@@ -386,12 +416,11 @@
   document.getElementById("menu-liste").innerHTML = modeles.map(([titre], i) =>
     `<li><a href="#modele-${i + 1}"><b>${i + 1}</b>${titre}</a></li>`).join("");
 
+  document.getElementById("footer-numeros").innerHTML = modeles.map(([titre], i) =>
+    `<li><a href="#modele-${i + 1}" title="${titre}" aria-label="Modèle ${i + 1} : ${titre}">${i + 1}</a></li>`).join("");
+
   const burger = document.getElementById("burger");
   const menu = document.getElementById("menu");
-  const entete = document.getElementById("haut");
-  const majBurger = () => burger.classList.toggle("defile", entete.getBoundingClientRect().bottom < 80);
-  majBurger();
-  window.addEventListener("scroll", majBurger, { passive: true });
   const basculer = (ouvert) => {
     menu.classList.toggle("ouvert", ouvert);
     burger.setAttribute("aria-expanded", ouvert);
