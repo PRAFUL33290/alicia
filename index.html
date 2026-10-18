@@ -31,7 +31,8 @@
     font-family: Barlow, sans-serif;
     font-weight: 400;
     color: var(--encre);
-    background: var(--fond);
+    /* Noir : Safari colore la zone de l'heure / batterie avec le fond du body */
+    background: #000;
   }
 
   header {
@@ -206,11 +207,14 @@
     padding: 4px 16px;
   }
 
+  /* Pleine largeur avec fond clair (le body est noir) ; les cartes restent à 1240px max.
+     Le haut reste transparent là où les cartes chevauchent le header. */
   main {
-    max-width: 1240px;
-    margin: -32px auto 0;
-    padding: 0 24px 64px;
+    --chevauchement: 32px;
+    margin-top: calc(-1 * var(--chevauchement));
+    padding: 0 max(24px, calc((100% - 1192px) / 2)) 64px;
     position: relative;
+    background: linear-gradient(transparent var(--chevauchement), var(--fond) 0);
   }
   .grille {
     display: grid;
@@ -383,7 +387,7 @@
     article { scroll-margin-top: calc(16px + env(safe-area-inset-top, 0px)); }
     .pastilles { gap: 8px; margin-top: 18px; }
     .pastilles span { padding: 3px 12px; font-size: .9rem; }
-    main { padding: 0 12px 40px; margin-top: -24px; }
+    main { padding: 0 12px 40px; --chevauchement: 24px; }
     .grille { gap: 16px; }
     article { padding: 14px; }
     .numeros { padding-top: 8px; padding-bottom: calc(8px + env(safe-area-inset-bottom, 0px)); }
