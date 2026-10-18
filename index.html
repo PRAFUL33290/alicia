@@ -15,7 +15,9 @@
     --gris: #6B7588;
     --fond: #EEF2F8;
     --nuit: #0B1220;
-    --nav-h: 88px;
+    --nav-h: 140px;
+    --logo-h: 120px;
+    --gouttiere: 24px;
   }
   * { box-sizing: border-box; margin: 0; }
   body {
@@ -33,31 +35,39 @@
       url("IMG/HEADER.jpg") center / cover no-repeat,
       var(--bleu);
     color: #fff;
-    padding: 56px 24px 72px;
+    padding: calc(var(--nav-h) + 8px) 24px 72px;
     text-align: center;
   }
   header > * { position: relative; }
   html { scroll-behavior: smooth; overflow-x: hidden; }
 
   .navbar {
-    position: sticky;
+    position: absolute;
     top: 0;
+    left: 0;
+    right: 0;
     z-index: 300;
-    background: #fff;
-    box-shadow: 0 2px 12px rgba(18, 22, 35, .12);
+    background: transparent;
   }
   .navbar-barre {
     max-width: 1240px;
     margin: 0 auto;
-    padding: 10px 24px;
+    padding: 10px var(--gouttiere);
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 16px;
   }
   .logo { display: block; }
-  .logo img { display: block; height: 68px; width: auto; }
+  .logo img { display: block; height: var(--logo-h); width: auto; }
+  /* Le burger reste fixe pour rouvrir le menu après défilement */
   .burger {
+    position: fixed;
+    z-index: 400;
+    top: calc(10px + (var(--logo-h) - 44px) / 2);
+    right: max(var(--gouttiere), calc((100vw - 1240px) / 2 + var(--gouttiere)));
+    border-radius: 50%;
+    transition: background .2s, box-shadow .2s, top .2s;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -72,14 +82,18 @@
     display: block;
     width: 26px;
     height: 3px;
-    background: var(--bleu);
+    background: #fff;
     border-radius: 2px;
-    transition: transform .2s, opacity .2s;
+    transition: transform .2s, opacity .2s, background .2s;
   }
   .burger-icone { position: relative; }
   .burger-icone::before, .burger-icone::after { content: ""; position: absolute; left: 0; }
   .burger-icone::before { top: -8px; }
   .burger-icone::after { top: 8px; }
+  .burger.defile { top: 16px; background: var(--bleu); box-shadow: 0 4px 14px rgba(11, 18, 32, .3); }
+  .burger[aria-expanded="true"] { top: 14px; right: var(--gouttiere); background: transparent; box-shadow: none; }
+  .burger[aria-expanded="true"] .burger-icone::before,
+  .burger[aria-expanded="true"] .burger-icone::after { background: var(--bleu); }
   .burger[aria-expanded="true"] .burger-icone { background: transparent; }
   .burger[aria-expanded="true"] .burger-icone::before { top: 0; transform: rotate(45deg); }
   .burger[aria-expanded="true"] .burger-icone::after { top: 0; transform: rotate(-45deg); }
@@ -87,7 +101,7 @@
   .menu {
     display: block;
     position: fixed;
-    top: var(--nav-h);
+    top: 0;
     left: 0;
     right: 0;
     bottom: 0;
@@ -131,15 +145,6 @@
     font-size: 1.2rem;
     color: var(--bleu);
   }
-  .menu-fermer {
-    border: 0;
-    background: transparent;
-    color: var(--bleu);
-    font-size: 1.6rem;
-    line-height: 1;
-    cursor: pointer;
-    padding: 4px 8px;
-  }
   .menu ul {
     list-style: none;
     padding: 8px 12px 20px;
@@ -169,7 +174,7 @@
     border-radius: 6px;
     padding: 0 6px;
   }
-  article { scroll-margin-top: 100px; }
+  article { scroll-margin-top: 24px; }
   h1 {
     font-family: "Barlow Condensed", sans-serif;
     font-weight: 800;
@@ -248,13 +253,25 @@
     background: var(--fond);
     border: 1px solid #dde3ee;
   }
-  .carte iframe {
+  .carte canvas {
+    position: relative;
+    z-index: 1;
+    display: block;
     width: 100%;
     height: 100%;
-    border: 0;
-    pointer-events: none;
+    object-fit: contain;
   }
-  .carte::after { content: ""; position: absolute; inset: 0; }
+  .carte.chargement canvas { opacity: 0; }
+  .carte.chargement::before {
+    content: "Chargement…";
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    font-size: .85rem;
+    color: var(--gris);
+  }
+  .carte.chargement[data-erreur]::before { content: "Aperçu indisponible"; }
   figcaption {
     margin-top: 6px;
     font-family: "Barlow Condensed", sans-serif;
@@ -277,16 +294,18 @@
   footer b { color: var(--bleu-vif); font-weight: 500; }
   footer span { margin: 0 10px; white-space: nowrap; }
 
+  @media (max-width: 1024px) {
+    :root { --logo-h: 104px; --nav-h: 124px; }
+  }
   @media (max-width: 600px) {
-    header { padding: 36px 16px 56px; }
-    header::before, header::after { display: none; }
-    .navbar-barre { padding: 6px 16px; }
-    .logo img { height: 42px; }
+    :root { --logo-h: 88px; --nav-h: 104px; --gouttiere: 16px; }
+    header { padding: calc(var(--nav-h) + 4px) 16px 56px; }
+    .navbar-barre { padding: 8px var(--gouttiere); }
+    .burger { top: calc(8px + (var(--logo-h) - 40px) / 2); }
     .burger { width: 40px; height: 40px; }
+    .burger[aria-expanded="true"] { top: 14px; }
     .menu-panneau { width: min(85vw, 320px); }
-    .navbar-barre { padding: 8px 16px; }
-    .logo img { height: 52px; }
-    article { scroll-margin-top: 82px; }
+    article { scroll-margin-top: 16px; }
     .pastilles { gap: 8px; margin-top: 18px; }
     .pastilles span { padding: 3px 12px; font-size: .9rem; }
     main { padding: 0 12px 40px; margin-top: -24px; }
@@ -295,15 +314,13 @@
     footer { padding: 24px 16px; line-height: 1.7; }
     footer span { display: block; }
   }
-  @media (max-width: 380px) {
-  }
 </style>
 </head>
 <body>
 
 <nav class="navbar" aria-label="Navigation principale">
   <div class="navbar-barre">
-    <a class="logo" href="#haut" aria-label="Rodrigues Auto Moto, retour en haut"><img src="LOGO/LOGO%20OFFICIEL.png" alt="Rodrigues Auto Moto"></a>
+    <a class="logo" href="#haut" aria-label="Rodrigues Auto Moto, retour en haut"><img src="LOGO/LOGO%20FOND%20BLANC%20CONTOURS%20BLEU.png" alt="Rodrigues Auto Moto"></a>
     <button class="burger" id="burger" type="button" aria-expanded="false" aria-controls="menu" aria-label="Choisir un modèle">
       <span class="burger-icone"></span>
     </button>
@@ -313,7 +330,6 @@
   <div class="menu-panneau">
     <div class="menu-entete">
       <span class="menu-titre">Modèles</span>
-      <button class="menu-fermer" id="menu-fermer" type="button" aria-label="Fermer le menu">&times;</button>
     </div>
     <ul id="menu-liste"></ul>
   </div>
@@ -334,6 +350,7 @@
   <span>07 82 62 91 21</span> <span>rodriguesautomoto@gmail.com</span> <span><b>@rodriguesautomoto</b></span> <span>Ambarès-et-Lagrave</span>
 </footer>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script>
   // [titre du modèle, nom de fichier recto, nom de fichier verso]
   const modeles = [
@@ -362,7 +379,7 @@
   const face = (fichier, libelle) => {
     const url = encodeURI(fichier);
     return `<figure><a href="${url}" target="_blank" rel="noopener" aria-label="Ouvrir ${libelle}">
-      <div class="carte"><iframe src="${url}#toolbar=0&navpanes=0&scrollbar=0&view=Fit" loading="lazy" title="${libelle}"></iframe></div>
+      <div class="carte chargement"><canvas data-pdf="${url}" role="img" aria-label="Aperçu ${libelle}"></canvas></div>
       <figcaption>${libelle}</figcaption></a></figure>`;
   };
 
@@ -371,19 +388,16 @@
 
   const burger = document.getElementById("burger");
   const menu = document.getElementById("menu");
-  const navbar = document.querySelector(".navbar");
-  const majHauteurNav = () => {
-    document.documentElement.style.setProperty("--nav-h", navbar.offsetHeight + "px");
-  };
-  majHauteurNav();
-  window.addEventListener("resize", majHauteurNav);
+  const entete = document.getElementById("haut");
+  const majBurger = () => burger.classList.toggle("defile", entete.getBoundingClientRect().bottom < 80);
+  majBurger();
+  window.addEventListener("scroll", majBurger, { passive: true });
   const basculer = (ouvert) => {
     menu.classList.toggle("ouvert", ouvert);
     burger.setAttribute("aria-expanded", ouvert);
     document.body.style.overflow = ouvert ? "hidden" : "";
   };
   burger.addEventListener("click", () => basculer(!menu.classList.contains("ouvert")));
-  document.getElementById("menu-fermer").addEventListener("click", () => basculer(false));
   menu.addEventListener("click", (e) => { if (e.target.closest("a") || e.target === menu) basculer(false); });
   document.addEventListener("keydown", (e) => { if (e.key === "Escape") basculer(false); });
 
@@ -392,6 +406,45 @@
       <div class="entete"><span class="num">${i + 1}</span><span class="titre">${titre}</span></div>
       <div class="faces">${face(recto, "Recto")}${face(verso, "Verso")}</div>
     </article>`).join("");
+
+  // Aperçu des PDF dessiné sur canvas avec PDF.js : les navigateurs mobiles
+  // n'affichent pas les PDF dans une iframe.
+  pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+  const dessiner = async (canvas) => {
+    const carte = canvas.parentElement;
+    try {
+      const pdf = await pdfjsLib.getDocument(canvas.dataset.pdf).promise;
+      const page = await pdf.getPage(1);
+      const base = page.getViewport({ scale: 1 });
+      const echelle = (carte.clientWidth * Math.min(window.devicePixelRatio || 1, 3)) / base.width;
+      const vue = page.getViewport({ scale: Math.max(echelle, 1) });
+      canvas.width = Math.ceil(vue.width);
+      canvas.height = Math.ceil(vue.height);
+      await page.render({ canvasContext: canvas.getContext("2d"), viewport: vue }).promise;
+      carte.classList.remove("chargement");
+    } catch (e) {
+      carte.dataset.erreur = "";
+      console.error(canvas.dataset.pdf, e);
+    }
+  };
+  // File d'attente : deux rendus à la fois pour que les premières cartes s'affichent vite
+  const file = [];
+  let enCours = 0;
+  const suivant = () => {
+    while (enCours < 2 && file.length) {
+      enCours++;
+      dessiner(file.shift()).finally(() => { enCours--; suivant(); });
+    }
+  };
+  const observateur = new IntersectionObserver((entrees) => {
+    entrees.forEach((entree) => {
+      if (!entree.isIntersecting) return;
+      observateur.unobserve(entree.target);
+      file.push(entree.target);
+    });
+    suivant();
+  }, { rootMargin: "300px 0px" });
+  document.querySelectorAll("canvas[data-pdf]").forEach((c) => observateur.observe(c));
 </script>
 </body>
 </html>
