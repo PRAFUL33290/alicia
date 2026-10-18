@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rodrigues Auto Moto · Cartes de visite</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=Barlow:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bleu: #1D4DA1;
+    --bleu-vif: #4F86FF;
+    --encre: #121623;
+    --gris: #6B7588;
+    --fond: #EEF2F8;
+    --nuit: #0B1220;
+  }
+  * { box-sizing: border-box; margin: 0; }
+  body {
+    font-family: Barlow, sans-serif;
+    font-weight: 400;
+    color: var(--encre);
+    background: var(--fond);
+  }
+
+  header {
+    position: relative;
+    overflow: hidden;
+    background: var(--bleu);
+    color: #fff;
+    padding: 56px 24px 72px;
+    text-align: center;
+  }
+  header::before, header::after {
+    content: "";
+    position: absolute;
+    top: -20%;
+    bottom: -20%;
+    width: 60px;
+    background: rgba(255, 255, 255, .08);
+    transform: skewX(-20deg);
+  }
+  header::before { left: 12%; }
+  header::after { left: calc(12% + 90px); width: 24px; }
+  header > * { position: relative; }
+  .logo {
+    display: inline-block;
+    background: #fff;
+    border-radius: 20px;
+    padding: 16px 28px;
+    box-shadow: 0 8px 24px rgba(11, 18, 32, .25);
+  }
+  .logo img { display: block; height: 130px; width: auto; }
+  h1 {
+    font-family: "Barlow Condensed", sans-serif;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    font-size: clamp(2.4rem, 6vw, 4.2rem);
+    line-height: 1.05;
+    margin: 12px 0 10px;
+  }
+  header p { font-weight: 500; opacity: .9; }
+  header .intro {
+    max-width: 640px;
+    margin: 16px auto 0;
+    font-size: .95rem;
+    line-height: 1.5;
+    opacity: .85;
+  }
+  .pastilles { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 22px; }
+  .pastilles span {
+    font-family: "Barlow Condensed", sans-serif;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    border: 1.5px solid rgba(255, 255, 255, .6);
+    border-radius: 999px;
+    padding: 4px 16px;
+  }
+
+  main {
+    max-width: 1240px;
+    margin: -32px auto 0;
+    padding: 0 24px 64px;
+    position: relative;
+  }
+  .grille {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr));
+    gap: 24px;
+  }
+  article {
+    background: #fff;
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 6px 24px rgba(18, 22, 35, .08);
+  }
+  .entete { display: flex; align-items: baseline; gap: 12px; margin-bottom: 14px; }
+  .num {
+    font-family: "Barlow Condensed", sans-serif;
+    font-weight: 800;
+    font-size: 1.5rem;
+    color: #fff;
+    background: var(--bleu);
+    border-radius: 8px;
+    padding: 0 10px;
+    letter-spacing: .04em;
+  }
+  .titre {
+    font-family: "Barlow Condensed", sans-serif;
+    font-weight: 700;
+    font-size: 1.3rem;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+  }
+  .faces { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  figure a { display: block; text-decoration: none; color: inherit; }
+  .carte {
+    position: relative;
+    aspect-ratio: 85 / 55;
+    border-radius: 8px;
+    overflow: hidden;
+    background: var(--fond);
+    border: 1px solid #dde3ee;
+  }
+  .carte iframe {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    pointer-events: none;
+  }
+  .carte::after { content: ""; position: absolute; inset: 0; }
+  figcaption {
+    margin-top: 6px;
+    font-family: "Barlow Condensed", sans-serif;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    font-size: .85rem;
+    color: var(--gris);
+  }
+  figure a:hover .carte { border-color: var(--bleu); box-shadow: 0 0 0 2px var(--bleu); }
+  figure a:hover figcaption { color: var(--bleu); }
+
+  footer {
+    background: var(--nuit);
+    color: #fff;
+    text-align: center;
+    padding: 32px 24px;
+    font-size: .95rem;
+  }
+  footer b { color: var(--bleu-vif); font-weight: 500; }
+  footer span { margin: 0 10px; white-space: nowrap; }
+
+  @media (max-width: 600px) {
+    header { padding: 36px 16px 56px; }
+    header::before, header::after { display: none; }
+    .logo { padding: 12px 18px; border-radius: 16px; }
+    .logo img { height: 84px; max-width: 100%; }
+    .pastilles { gap: 8px; margin-top: 18px; }
+    .pastilles span { padding: 3px 12px; font-size: .9rem; }
+    main { padding: 0 12px 40px; margin-top: -24px; }
+    .grille { gap: 16px; }
+    article { padding: 14px; }
+    .titre { font-size: 1.15rem; }
+    footer { padding: 24px 16px; line-height: 1.7; }
+    footer span { display: block; }
+  }
+  @media (max-width: 380px) {
+    .faces { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo"><img src="LOGO/LOGO%20OFFICIEL.png" alt="Rodrigues Auto Moto"></div>
+  <h1>Cartes de visite</h1>
+  <p>Votre mécanicien spécialiste · 20 modèles recto verso</p>
+  <p class="intro">Voici 20 propositions de cartes de visite. Chaque modèle pourra être réadapté si besoin : couleurs, textes, mise en page.</p>
+  <div class="pastilles"><span>Rapide</span><span>Fiable</span><span>Ambulant</span></div>
+</header>
+
+<main>
+  <div class="grille" id="grille"></div>
+</main>
+
+<footer>
+  <span>07 82 62 91 21</span> <span>rodriguesautomoto@gmail.com</span> <span><b>@rodriguesautomoto</b></span> <span>Ambarès-et-Lagrave</span>
+</footer>
+
+<script>
+  // [titre du modèle, nom de fichier recto, nom de fichier verso]
+  const modeles = [
+    ["Modèle officiel reconstruit", "MODÈLE OFFICIEL RECONSTRUIT · RECTO.pdf", "MODÈLE OFFICIEL RECONSTRUIT · VERSO.pdf"],
+    ["Version 2", "RECTO v2.pdf", "VERSO v2.pdf"],
+    ["Version 3", "RECTO v3.pdf", "VERSO v3.pdf"],
+    ["Version 4", "RECTO v4.pdf", "VERSO v4.pdf"],
+    ["Classique épuré", "V5 · Classique épuré — RECTO.pdf", "V5 · Classique épuré — VERSO.pdf"],
+    ["Tableau de bord", "V6 · Tableau de bord — RECTO.pdf", "V6 · Tableau de bord — VERSO.pdf"],
+    ["Plaque d’immatriculation", "V7 · Plaque d’immatriculation — RECTO.pdf", "V7 · Plaque d’immatriculation — VERSO.pdf"],
+    ["Atelier (jaune sécurité)", "V8 · Atelier (jaune sécurité) — RECTO.pdf", "V8 · Atelier (jaune sécurité) — VERSO.pdf"],
+    ["Typo géante", "V9 · Typo géante — RECTO.pdf", "V9 · Typo géante — VERSO.pdf"],
+    ["Disque de frein", "V10 · Disque de frein — RECTO.pdf", "V10 · Disque de frein — VERSO.pdf"],
+    ["Blanc épuré", "V11 · Blanc épuré — RECTO.pdf", "V11 · Blanc épuré — VERSO.pdf"],
+    ["Blanc éditorial", "V12 · Blanc éditorial — RECTO.pdf", "V12 · Blanc éditorial — VERSO.pdf"],
+    ["Boutons web", "V13 · Boutons web — RECTO.pdf", "V13 · Boutons web — VERSO.pdf"],
+    ["Web Miroir", "V14 · Web Miroir — RECTO.pdf", "V14 · Web Miroir — VERSO.pdf"],
+    ["Web Centré", "V15 · Web Centré — RECTO.pdf", "V15 · Web Centré — VERSO.pdf"],
+    ["Web Soft UI", "V16 · Web Soft UI — RECTO.pdf", "V16 · Web Soft UI — VERSO.pdf"],
+    ["Web Navigation", "V17 · Web Navigation — RECTO.pdf", "V17 · Web Navigation — VERSO.pdf"],
+    ["Web Bento", "V18 · Web Bento — RECTO.pdf", "V18 · Web Bento — VERSO.pdf"],
+    ["Web Éditorial", "V19 · Web Éditorial — RECTO.pdf", "V19 · Web Éditorial — VERSO.pdf"],
+    ["Web Essentiel", "V20 · Web Essentiel — RECTO.pdf", "V20 · Web Essentiel — VERSO.pdf"],
+  ];
+
+  const face = (fichier, libelle) => {
+    const url = encodeURI(fichier);
+    return `<figure><a href="${url}" target="_blank" rel="noopener" aria-label="Ouvrir ${libelle}">
+      <div class="carte"><iframe src="${url}#toolbar=0&navpanes=0&scrollbar=0&view=Fit" loading="lazy" title="${libelle}"></iframe></div>
+      <figcaption>${libelle}</figcaption></a></figure>`;
+  };
+
+  document.getElementById("grille").innerHTML = modeles.map(([titre, recto, verso], i) => `
+    <article>
+      <div class="entete"><span class="num">${i + 1}</span><span class="titre">${titre}</span></div>
+      <div class="faces">${face(recto, "Recto")}${face(verso, "Verso")}</div>
+    </article>`).join("");
+</script>
+</body>
+</html>
