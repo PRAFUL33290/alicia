@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <!-- Zone de l'heure / batterie : couleur du haut de la hero, ou image en transparence une fois ajouté à l'écran d'accueil -->
-<meta name="theme-color" content="#0B1220">
+<meta name="theme-color" content="#000000">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -46,7 +46,8 @@
     text-align: center;
   }
   header > * { position: relative; }
-  html { scroll-behavior: smooth; overflow-x: hidden; }
+  /* Fond noir derrière la page : zone de l'heure et rebond du défilement */
+  html { scroll-behavior: smooth; overflow-x: hidden; background: #000; }
 
   .navbar {
     position: absolute;
