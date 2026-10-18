@@ -2,7 +2,14 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<!-- Zone de l'heure / batterie : couleur du haut de la hero, ou image en transparence une fois ajouté à l'écran d'accueil -->
+<meta name="theme-color" content="#0B1220">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Rodrigues">
+<link rel="apple-touch-icon" href="LOGO/LOGO%20OFFICIEL.png">
 <title>Rodrigues Auto Moto · Cartes de visite</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -35,7 +42,7 @@
       url("IMG/HEADER.jpg") center / cover no-repeat,
       var(--bleu);
     color: #fff;
-    padding: calc(var(--nav-h) + 8px) 24px 72px;
+    padding: calc(var(--nav-h) + 8px + env(safe-area-inset-top, 0px)) 24px 72px;
     text-align: center;
   }
   header > * { position: relative; }
@@ -51,7 +58,7 @@
   .navbar-barre {
     max-width: 1240px;
     margin: 0 auto;
-    padding: 10px var(--gouttiere);
+    padding: calc(10px + env(safe-area-inset-top, 0px)) var(--gouttiere) 10px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -86,7 +93,7 @@
   .burger-icone::before { top: -8px; }
   .burger-icone::after { top: 8px; }
   /* Menu ouvert : le burger devient la croix, en haut du volet */
-  .burger[aria-expanded="true"] { position: fixed; top: 14px; right: var(--gouttiere); }
+  .burger[aria-expanded="true"] { position: fixed; top: calc(14px + env(safe-area-inset-top, 0px)); right: var(--gouttiere); }
   .burger[aria-expanded="true"] .burger-icone::before,
   .burger[aria-expanded="true"] .burger-icone::after { background: var(--bleu); }
   .burger[aria-expanded="true"] .burger-icone { background: transparent; }
@@ -129,7 +136,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 18px 20px;
+    padding: calc(18px + env(safe-area-inset-top, 0px)) 20px 18px;
     border-bottom: 1px solid #dde3ee;
   }
   .menu-titre {
@@ -169,7 +176,7 @@
     border-radius: 6px;
     padding: 0 6px;
   }
-  article { scroll-margin-top: 24px; }
+  article { scroll-margin-top: calc(24px + env(safe-area-inset-top, 0px)); }
   h1 {
     font-family: "Barlow Condensed", sans-serif;
     font-weight: 800;
@@ -368,11 +375,11 @@
   }
   @media (max-width: 600px) {
     :root { --logo-h: 88px; --nav-h: 104px; --gouttiere: 16px; }
-    header { padding: calc(var(--nav-h) + 4px) 16px 56px; }
-    .navbar-barre { padding: 8px var(--gouttiere); }
+    header { padding: calc(var(--nav-h) + 4px + env(safe-area-inset-top, 0px)) 16px 56px; }
+    .navbar-barre { padding: calc(8px + env(safe-area-inset-top, 0px)) var(--gouttiere) 8px; }
     .burger { width: 40px; height: 40px; }
     .menu-panneau { width: min(85vw, 320px); }
-    article { scroll-margin-top: 16px; }
+    article { scroll-margin-top: calc(16px + env(safe-area-inset-top, 0px)); }
     .pastilles { gap: 8px; margin-top: 18px; }
     .pastilles span { padding: 3px 12px; font-size: .9rem; }
     main { padding: 0 12px 40px; margin-top: -24px; }
