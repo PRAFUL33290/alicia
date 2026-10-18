@@ -15,6 +15,7 @@
     --gris: #6B7588;
     --fond: #EEF2F8;
     --nuit: #0B1220;
+    --nav-h: 88px;
   }
   * { box-sizing: border-box; margin: 0; }
   body {
@@ -27,31 +28,148 @@
   header {
     position: relative;
     overflow: hidden;
-    background: var(--bleu);
+    background:
+      linear-gradient(180deg, rgba(11, 18, 32, .72), rgba(11, 18, 32, .55) 50%, rgba(29, 77, 161, .85)),
+      url("IMG/HEADER.jpg") center / cover no-repeat,
+      var(--bleu);
     color: #fff;
     padding: 56px 24px 72px;
     text-align: center;
   }
-  header::before, header::after {
-    content: "";
-    position: absolute;
-    top: -20%;
-    bottom: -20%;
-    width: 60px;
-    background: rgba(255, 255, 255, .08);
-    transform: skewX(-20deg);
-  }
-  header::before { left: 12%; }
-  header::after { left: calc(12% + 90px); width: 24px; }
   header > * { position: relative; }
-  .logo {
-    display: inline-block;
+  html { scroll-behavior: smooth; overflow-x: hidden; }
+
+  .navbar {
+    position: sticky;
+    top: 0;
+    z-index: 300;
     background: #fff;
-    border-radius: 20px;
-    padding: 16px 28px;
-    box-shadow: 0 8px 24px rgba(11, 18, 32, .25);
+    box-shadow: 0 2px 12px rgba(18, 22, 35, .12);
   }
-  .logo img { display: block; height: 130px; width: auto; }
+  .navbar-barre {
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 10px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  .logo { display: block; }
+  .logo img { display: block; height: 68px; width: auto; }
+  .burger {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+    padding: 0;
+  }
+  .burger-icone, .burger-icone::before, .burger-icone::after {
+    display: block;
+    width: 26px;
+    height: 3px;
+    background: var(--bleu);
+    border-radius: 2px;
+    transition: transform .2s, opacity .2s;
+  }
+  .burger-icone { position: relative; }
+  .burger-icone::before, .burger-icone::after { content: ""; position: absolute; left: 0; }
+  .burger-icone::before { top: -8px; }
+  .burger-icone::after { top: 8px; }
+  .burger[aria-expanded="true"] .burger-icone { background: transparent; }
+  .burger[aria-expanded="true"] .burger-icone::before { top: 0; transform: rotate(45deg); }
+  .burger[aria-expanded="true"] .burger-icone::after { top: 0; transform: rotate(-45deg); }
+
+  .menu {
+    display: block;
+    position: fixed;
+    top: var(--nav-h);
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 200;
+    background: rgba(11, 18, 32, 0);
+    visibility: hidden;
+    transition: background .25s ease, visibility 0s linear .25s;
+  }
+  .menu.ouvert {
+    visibility: visible;
+    background: rgba(11, 18, 32, .5);
+    transition: background .25s ease;
+  }
+  .menu-panneau {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100%;
+    width: min(85vw, 360px);
+    background: #fff;
+    box-shadow: -10px 0 30px rgba(11, 18, 32, .25);
+    transform: translateX(100%);
+    transition: transform .3s ease;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+  }
+  .menu.ouvert .menu-panneau { transform: translateX(0); }
+  .menu-entete {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 20px;
+    border-bottom: 1px solid #dde3ee;
+  }
+  .menu-titre {
+    font-family: "Barlow Condensed", sans-serif;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    font-size: 1.2rem;
+    color: var(--bleu);
+  }
+  .menu-fermer {
+    border: 0;
+    background: transparent;
+    color: var(--bleu);
+    font-size: 1.6rem;
+    line-height: 1;
+    cursor: pointer;
+    padding: 4px 8px;
+  }
+  .menu ul {
+    list-style: none;
+    padding: 8px 12px 20px;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .menu a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 8px;
+    border-radius: 8px;
+    color: var(--encre);
+    text-decoration: none;
+    font-weight: 500;
+  }
+  .menu a:hover, .menu a:focus-visible { background: var(--fond); color: var(--bleu); }
+  .menu a b {
+    font-family: "Barlow Condensed", sans-serif;
+    font-weight: 800;
+    min-width: 32px;
+    text-align: center;
+    color: #fff;
+    background: var(--bleu);
+    border-radius: 6px;
+    padding: 0 6px;
+  }
+  article { scroll-margin-top: 100px; }
   h1 {
     font-family: "Barlow Condensed", sans-serif;
     font-weight: 800;
@@ -92,6 +210,7 @@
     gap: 24px;
   }
   article {
+    min-width: 0;
     background: #fff;
     border-radius: 16px;
     padding: 20px;
@@ -115,7 +234,11 @@
     text-transform: uppercase;
     letter-spacing: .04em;
   }
-  .faces { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .faces { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+  figure { min-width: 0; }
+  @media (max-width: 768px) {
+    .faces { grid-template-columns: minmax(0, 1fr); }
+  }
   figure a { display: block; text-decoration: none; color: inherit; }
   .carte {
     position: relative;
@@ -157,26 +280,46 @@
   @media (max-width: 600px) {
     header { padding: 36px 16px 56px; }
     header::before, header::after { display: none; }
-    .logo { padding: 12px 18px; border-radius: 16px; }
-    .logo img { height: 84px; max-width: 100%; }
+    .navbar-barre { padding: 6px 16px; }
+    .logo img { height: 42px; }
+    .burger { width: 40px; height: 40px; }
+    .menu-panneau { width: min(85vw, 320px); }
+    .navbar-barre { padding: 8px 16px; }
+    .logo img { height: 52px; }
+    article { scroll-margin-top: 82px; }
     .pastilles { gap: 8px; margin-top: 18px; }
     .pastilles span { padding: 3px 12px; font-size: .9rem; }
     main { padding: 0 12px 40px; margin-top: -24px; }
     .grille { gap: 16px; }
     article { padding: 14px; }
-    .titre { font-size: 1.15rem; }
     footer { padding: 24px 16px; line-height: 1.7; }
     footer span { display: block; }
   }
   @media (max-width: 380px) {
-    .faces { grid-template-columns: 1fr; }
   }
 </style>
 </head>
 <body>
 
-<header>
-  <div class="logo"><img src="LOGO/LOGO%20OFFICIEL.png" alt="Rodrigues Auto Moto"></div>
+<nav class="navbar" aria-label="Navigation principale">
+  <div class="navbar-barre">
+    <a class="logo" href="#haut" aria-label="Rodrigues Auto Moto, retour en haut"><img src="LOGO/LOGO%20OFFICIEL.png" alt="Rodrigues Auto Moto"></a>
+    <button class="burger" id="burger" type="button" aria-expanded="false" aria-controls="menu" aria-label="Choisir un modèle">
+      <span class="burger-icone"></span>
+    </button>
+  </div>
+</nav>
+<div class="menu" id="menu">
+  <div class="menu-panneau">
+    <div class="menu-entete">
+      <span class="menu-titre">Modèles</span>
+      <button class="menu-fermer" id="menu-fermer" type="button" aria-label="Fermer le menu">&times;</button>
+    </div>
+    <ul id="menu-liste"></ul>
+  </div>
+</div>
+
+<header id="haut">
   <h1>Cartes de visite</h1>
   <p>Votre mécanicien spécialiste · 20 modèles recto verso</p>
   <p class="intro">Voici 20 propositions de cartes de visite. Chaque modèle pourra être réadapté si besoin : couleurs, textes, mise en page.</p>
@@ -223,8 +366,29 @@
       <figcaption>${libelle}</figcaption></a></figure>`;
   };
 
+  document.getElementById("menu-liste").innerHTML = modeles.map(([titre], i) =>
+    `<li><a href="#modele-${i + 1}"><b>${i + 1}</b>${titre}</a></li>`).join("");
+
+  const burger = document.getElementById("burger");
+  const menu = document.getElementById("menu");
+  const navbar = document.querySelector(".navbar");
+  const majHauteurNav = () => {
+    document.documentElement.style.setProperty("--nav-h", navbar.offsetHeight + "px");
+  };
+  majHauteurNav();
+  window.addEventListener("resize", majHauteurNav);
+  const basculer = (ouvert) => {
+    menu.classList.toggle("ouvert", ouvert);
+    burger.setAttribute("aria-expanded", ouvert);
+    document.body.style.overflow = ouvert ? "hidden" : "";
+  };
+  burger.addEventListener("click", () => basculer(!menu.classList.contains("ouvert")));
+  document.getElementById("menu-fermer").addEventListener("click", () => basculer(false));
+  menu.addEventListener("click", (e) => { if (e.target.closest("a") || e.target === menu) basculer(false); });
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape") basculer(false); });
+
   document.getElementById("grille").innerHTML = modeles.map(([titre, recto, verso], i) => `
-    <article>
+    <article id="modele-${i + 1}">
       <div class="entete"><span class="num">${i + 1}</span><span class="titre">${titre}</span></div>
       <div class="faces">${face(recto, "Recto")}${face(verso, "Verso")}</div>
     </article>`).join("");
