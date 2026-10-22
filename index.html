@@ -221,6 +221,22 @@
     grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr));
     gap: 24px;
   }
+  .valide {
+    max-width: 1240px;
+    margin: 0 auto 28px;
+    padding: 20px;
+    background: #fff;
+    border: 2px solid var(--bleu);
+    border-radius: 14px;
+    box-shadow: 0 10px 24px rgba(11, 18, 32, .08);
+  }
+  .valide-entete { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; margin-bottom: 16px; }
+  .valide h2 { color: var(--bleu); font: 800 1.5rem/1 Barlow Condensed, sans-serif; text-transform: uppercase; }
+  .valide p { color: var(--gris); font-size: .95rem; }
+  .valide-faces { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+  .valide-faces figure { min-width: 0; }
+  .valide-faces img { display: block; width: 100%; height: auto; border-radius: 8px; }
+  .valide-faces figcaption { margin-top: 6px; color: var(--gris); font-size: .9rem; text-align: center; }
   article {
     min-width: 0;
     background: #fff;
@@ -389,6 +405,10 @@
     .pastilles span { padding: 3px 12px; font-size: .9rem; }
     main { padding: 0 12px 40px; --chevauchement: 24px; }
     .grille { gap: 16px; }
+    .valide { margin-bottom: 20px; padding: 14px; }
+    .valide-entete { display: block; }
+    .valide p { margin-top: 6px; }
+    .valide-faces { grid-template-columns: minmax(0, 1fr); gap: 12px; }
     article { padding: 14px; }
     .numeros { padding-top: 8px; padding-bottom: calc(8px + env(safe-area-inset-bottom, 0px)); }
     .numeros ul { gap: 4px; }
@@ -426,6 +446,22 @@
 </header>
 
 <main>
+  <section class="valide" aria-labelledby="titre-modele-valide">
+    <div class="valide-entete">
+      <h2 id="titre-modele-valide">Modèle validé</h2>
+      <p>La version retenue, présentée en premier.</p>
+    </div>
+    <div class="valide-faces">
+      <figure>
+        <img src="ASSETS/%5BVALIDE%5D%20RECTO%20v2.jpg" alt="Modèle validé · Recto">
+        <figcaption>Recto</figcaption>
+      </figure>
+      <figure>
+        <img src="ASSETS/%5BVALIDE%5D%20VERSO%20v2.jpg" alt="Modèle validé · Verso">
+        <figcaption>Verso</figcaption>
+      </figure>
+    </div>
+  </section>
   <div class="grille" id="grille"></div>
 </main>
 
